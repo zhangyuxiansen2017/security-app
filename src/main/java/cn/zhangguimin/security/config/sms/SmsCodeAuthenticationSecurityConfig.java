@@ -1,7 +1,7 @@
 package cn.zhangguimin.security.config.sms;
 
-import cn.zhangguimin.security.config.LoginFailHandler;
-import cn.zhangguimin.security.config.LoginSuccessHandler;
+import cn.zhangguimin.security.config.authorization.LoginFailHandler;
+import cn.zhangguimin.security.config.authorization.LoginSuccessHandler;
 import cn.zhangguimin.security.config.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

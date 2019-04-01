@@ -89,13 +89,15 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
         HttpSession session = request.getSession();
 
-        String captcha = (String) session.getAttribute(validateCodeType);
-        LocalDateTime ldt = (LocalDateTime) session.getAttribute(SecurityConstants.SESSION_KEY_DATE);
-        boolean isExpried = ldt.isBefore(LocalDateTime.now());
-
+        String captcha;
+        LocalDateTime ldt;
+        boolean isExpried;
         String codeInRequest;
         String username;
         try {
+            captcha = (String) session.getAttribute(validateCodeType);
+            ldt = (LocalDateTime) session.getAttribute(SecurityConstants.SESSION_KEY_DATE);
+            isExpried = ldt.isBefore(LocalDateTime.now());
             username = ServletRequestUtils.getStringParameter(request, SecurityConstants.DEFAULT_PARAMETER_NAME_LOGIN_NAME);
             Integer count = (Integer) redisTemplate.opsForValue().get(username);
             count = (count == null ? 0 : count);
@@ -105,7 +107,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
                 redisTemplate.opsForValue().set(username, count + 1,24, TimeUnit.DAYS);
             }
             codeInRequest = ServletRequestUtils.getStringParameter(request, validateCodeType);
-        } catch (ServletRequestBindingException e) {
+        } catch (Exception e) {
             throw new ValidateCaptchaException("获取验证码的值失败");
         }
         if (StringUtils.isEmpty(codeInRequest)) {

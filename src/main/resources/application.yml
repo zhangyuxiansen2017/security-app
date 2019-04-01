@@ -42,8 +42,8 @@ spring:
     port: 6388
     password: 1991820
 #oauth2
-security:
-  oauth2:
-    client:
-      client-secret: zgmsecret
-      client-id: zgmid
+#security:
+#  oauth2:
+#    client:
+#      client-secret: zgmsecret
+#      client-id: zgmid

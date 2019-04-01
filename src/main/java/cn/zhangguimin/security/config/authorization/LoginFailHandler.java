@@ -1,4 +1,4 @@
-package cn.zhangguimin.security.config;
+package cn.zhangguimin.security.config.authorization;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
