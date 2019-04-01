@@ -74,7 +74,14 @@ public class SecurityConfig extends ResourceServerConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/invalidSession","/login", securityProperties.getCaptcha().getUrl(), securityProperties.getCaptcha().getProcessingUrl(), securityProperties.getSms().getUrl(), securityProperties.getSms().getProcessingUrl()).permitAll()
+                .antMatchers("/oauth/token",
+                        "/invalidSession",
+                        "/login",
+                        securityProperties.getCaptcha().getUrl(),
+                        securityProperties.getCaptcha().getProcessingUrl(),
+                        securityProperties.getSms().getUrl(),
+                        securityProperties.getSms().getProcessingUrl())
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

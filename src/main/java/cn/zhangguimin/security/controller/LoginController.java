@@ -1,12 +1,20 @@
 package cn.zhangguimin.security.controller;
 
 import cn.zhangguimin.security.config.properties.SecurityProperties;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.apache.commons.lang.StringUtils;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author Mr. Zhang
@@ -39,8 +47,12 @@ public class LoginController {
      */
     @GetMapping("/me")
     @ResponseBody
-    public Object getCurrentUser(@AuthenticationPrincipal UserDetails user) {
-        return user;
+    public Object getCurrentUser(HttpServletRequest request) throws UnsupportedEncodingException {
+        //解析自定义jwt
+        String authentication = request.getHeader("Authorization");
+        String token = StringUtils.substringAfter(authentication, "bearer");
+        Claims claims = Jwts.parser().setSigningKey("zgm".getBytes("UTF-8")).parseClaimsJws(token).getBody();
+        return claims;
     }
 
     @GetMapping(value = "/invalidSession")

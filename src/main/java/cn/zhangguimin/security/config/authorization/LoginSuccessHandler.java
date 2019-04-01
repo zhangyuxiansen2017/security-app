@@ -3,18 +3,16 @@ package cn.zhangguimin.security.config.authorization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
-import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +27,7 @@ import java.util.HashMap;
  * @date 2019-03-27 22:17
  * @website https://www.zhangguimin.cn
  */
-@Component
+@Configuration
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Autowired
@@ -65,7 +63,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         } else if (!StringUtils.equals(clientDetails.getClientSecret(), clientSecret)) {
             throw new UnapprovedClientAuthenticationException("clientSecret不匹配");
         }
-        TokenRequest tokenRequest = new TokenRequest(new HashMap<>(), clientId, clientDetails.getScope(), "");
+        TokenRequest tokenRequest = new TokenRequest(new HashMap<>(), clientId, clientDetails.getScope(), "custom");
         OAuth2Request oAuth2Request = tokenRequest.createOAuth2Request(clientDetails);
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
         OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
